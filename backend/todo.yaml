@@ -1,0 +1,176 @@
+openapi: "3.0.3"
+info:
+  version: 1.0.0
+  title: Simple TODO API server
+servers:
+  - url: http://localhost:8000/api
+paths:
+  /tasks:
+    get:
+      tags:
+        - "task"
+      summary: get all tasks
+      operationId: getTasks
+      responses:
+        "200":
+          description: get all tasks
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/Task"
+        "500":
+          $ref: "#/components/responses/InternalErrorResponse"
+
+    post:
+      tags:
+        - "task"
+      summary: create a task
+      operationId: createTask
+      requestBody:
+        description: data for creating a task
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/NewTask"
+      responses:
+        "200":
+          description: success
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  id:
+                    type: integer
+                    format: int64
+        "400":
+          $ref: "#/components/responses/BadRequestResponse"
+        "500":
+          $ref: "#/components/responses/InternalErrorResponse"
+
+  /tasks/{id}:
+    parameters:
+      - $ref: "#/components/parameters/TaskIdParameter"
+    get:
+      tags:
+        - "task"
+      operationId: getTask
+      responses:
+        "200":
+          description: success
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Task"
+        "404":
+          $ref: "#/components/responses/NotFoundResponse"
+        "500":
+          $ref: "#/components/responses/InternalErrorResponse"
+
+    put:
+      tags:
+        - "task"
+      operationId: updateTask
+      requestBody:
+        description: data for updating the task
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/NewTask"
+      responses:
+        "200":
+          description: success
+        "400":
+          $ref: "#/components/responses/BadRequestResponse"
+        "500":
+          $ref: "#/components/responses/InternalErrorResponse"
+
+    delete:
+      tags:
+        - "task"
+      operationId: deleteTask
+      responses:
+        "200":
+          description: success
+        "500":
+          $ref: "#/components/responses/InternalErrorResponse"
+
+components:
+  schemas:
+    NewTask:
+      type: object
+      required:
+        - title
+        - description
+      properties:
+        "title":
+          type: string
+        "description":
+          type: string
+
+    Task:
+      allOf:
+        - $ref: "#/components/schemas/NewTask"
+        - required:
+            - id
+          properties:
+            id:
+              type: integer
+              format: int64
+
+    Error:
+      type: object
+      required:
+        - code
+        - message
+      properties:
+        code:
+          type: integer
+          format: int32
+        message:
+          type: string
+
+  parameters:
+    TaskIdParameter:
+      name: id
+      in: path
+      description: todo id
+      required: true
+      schema:
+        type: integer
+        format: int64
+
+  requestBodies:
+    CreateTaskRequestBody:
+      description: data for creating a task
+      required: true
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/Task"
+
+  responses:
+    NotFoundResponse:
+      description: Not Found
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/Error"
+
+    BadRequestResponse:
+      description: Bad Request
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/Error"
+
+    InternalErrorResponse:
+      description: Internal Error
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/Error"
