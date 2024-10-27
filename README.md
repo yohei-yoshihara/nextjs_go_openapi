@@ -1,6 +1,6 @@
 # Next.js + Go backend Todo App with OpenAPI
 
-Next.js をフロントエンド、Go をバックエンドにし、OpenAPI で API を定義しコードジェネレーターを用いて通信を行うサンプルアプリケーションである。
+Next.js をフロントエンド、Go をバックエンドにし、OpenAPI で API を定義しコードジェネレーターを用いて通信を行うサンプルアプリケーション。
 
 ## Go backend
 
