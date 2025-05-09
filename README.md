@@ -14,7 +14,7 @@ go run . serve
 
 ```bash
 cd frontend
-npm run dev
+pnpm run dev
 ```
 
 Go バックエンド側にリバースプロキシを有効にしてあるので、以下のアドレスでアクセスできる。
@@ -42,5 +42,5 @@ go generate
 
 ```bash
 cd frontend
-npm run apigen
+pnpm run apigen
 ```
