@@ -86,7 +86,7 @@ export async function updateTask(
     },
   });
 
-  if (!data) {
+  if (error) {
     return { message: error.message };
   }
 
